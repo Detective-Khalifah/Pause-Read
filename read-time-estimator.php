@@ -10,7 +10,9 @@ Author URI: https://example.com
 */
 
 // Load the plugin dependencies.
-require_once(dirname(__FILE__) . '/vendor/autoload.php');
+//require_once(dirname(__FILE__) . '/vendor/autoload.php');
+
+use Google\Cloud\TextToSpeech\TextToSpeechClient;
 
 // Create a new class for the plugin.
 class ReadTimeEstimator {
@@ -27,7 +29,8 @@ class ReadTimeEstimator {
     // Estimates the reading time of an article.
     public function estimateReadingTime($content) {
         // Use a text-to-speech library to estimate the reading time of the article.
-        $textToSpeech = new GoogleTextToSpeech();
+	    $textToSpeech = new TextToSpeechClient();
+
         $readingTime = $textToSpeech->estimateReadingTime($content);
 
         // Return the reading time in minutes.
@@ -53,5 +56,9 @@ class ReadTimeEstimator {
 // Create a new instance of the plugin class.
 $readTimeEstimator = new ReadTimeEstimator();
 
+function activate_readrex() {
+	require_once plugin_dir_path(__FILE__) . 'vendor/autoload.php';
+}
+
 // Activate the plugin.
-register_activation_hook(__FILE__, array($readTimeEstimator, 'activate'));
+register_activation_hook(__FILE__, array($readTimeEstimator, 'activate_readrex'));
